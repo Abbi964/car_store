@@ -27,6 +27,7 @@ const typeDefs = `#graphql
     }
     type Review{
         id : ID!
+        username : String!
         title : String!
         review : String!
         rating : Float!
