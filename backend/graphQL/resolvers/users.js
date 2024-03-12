@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../../model/user.js";
 import authCheck from "../../util/authCheck.js";
+import jwt from 'jsonwebtoken'
 
 const userResolvers = {
   Query: {
@@ -91,6 +92,36 @@ const userResolvers = {
         catch(err){
             console.log(err);
             return err 
+        }
+    },
+    // ------------------------ login --------------------------------------//
+    async login(_,args){
+        try{
+            const email = args.email;
+            const password = args.password;
+
+            // getting user from db
+            let user = await User.findOne({where : {email : email}})
+            
+            if (user){
+                // checking password
+                const match = bcrypt.compareSync(password,user.password)
+
+                if ( match){
+                    let accessToken = jwt.sign({userId : user.id},process.env.JWT_KEY)
+                    return accessToken
+                }
+                else{
+                    throw new Error("Incorrect Password")
+                }
+            }
+            else{
+                throw new Error("Incorrect Email")
+            }
+        }
+        catch(err){
+            console.log(err);
+            return err
         }
     }
   },

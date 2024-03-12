@@ -55,6 +55,7 @@ const typeDefs = `#graphql
         deleteVehicle(id : ID!) : String
         addUser(user : addUserInput!) : User
         deleteUser(id : ID!) : String
+        login(email : String!, password : String!) : String!
         addReview(review : addReviewInput!) : Review
         deleteReview(id : ID!) : String
         addAppointment(appointment : addAppointmentInput!) : Appointment
