@@ -23,7 +23,8 @@ Review.belongsTo(User);
 // setting up server 
 const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    context : ({ req }) => ({ req})
 })
 
 const {url} = await startStandaloneServer(server, {

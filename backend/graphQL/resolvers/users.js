@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import User from "../../model/user.js";
+import authCheck from "../../util/authCheck.js";
 
 const userResolvers = {
   Query: {
@@ -71,7 +72,27 @@ const userResolvers = {
         }
     },
     //------------------------ Delete User ----------------------------------//
+    async deleteUser(_,args,context){
+        try{
+            const {user} = authCheck(context)
+            const userId = args.id
     
+            if (user || user.id == userId || user.isAdmin){
+                // deleting user
+                await user.destroy()
+    
+                return "user deleted Successfully"
+            }
+            else if(!user.isAdmin){
+                return "Not Authorized : you are not admin"
+            }
+            
+        }
+        catch(err){
+            console.log(err);
+            return err 
+        }
+    }
   },
 };
 
