@@ -1,3 +1,6 @@
+// configuring dotenv
+import 'dotenv/config'
+
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer} from "@apollo/server/standalone";
 import typeDefs from "./graphQL/typeDefs.js";
