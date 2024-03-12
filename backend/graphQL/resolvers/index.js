@@ -1,8 +1,11 @@
+import userResolvers from "./users.js";
+
 const resolvers = {
     Query : {
-        sayHi(){
-            return "Hello"
-        }
+        ...userResolvers.Query
+    },
+    Mutation : {
+        ...userResolvers.Mutation
     }
 }
 
