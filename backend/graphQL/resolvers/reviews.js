@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 import Review from "../../model/review.js";
 import authCheck from "../../util/authCheck.js";
 
@@ -10,7 +10,7 @@ const reviewResolver = {
                 const vehicleId = parent.id;
 
                 // getting reviews from db
-                const reviews = await parent.getReviews()
+                const reviews = await Review.findAll({where : {VehicleId : vehicleId}})
 
                 return reviews;
             }

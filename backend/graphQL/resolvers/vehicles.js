@@ -1,6 +1,7 @@
 import Vehicle from "../../model/vehicle.js";
 import { Op } from "sequelize";
 import authCheck from "../../util/authCheck.js";
+import client from "../../util/redisServer.js";
 
 const vehicleResolver = {
     Query : {
@@ -28,9 +29,29 @@ const vehicleResolver = {
                     }
                 }
                 console.log("whereCluse--->",whereClause)
-                // Finding vehicles based on the constructed whereClause
-                const vehicles = await Vehicle.findAll({ where: whereClause });
-                // first convering images and interier_features into arrays
+                let vehicles;
+                // First checking if current whereCluse is same as last one if yes we can get data from redis server instead
+                let redisWhereCluase = await client.get('whereClause')
+                if (redisWhereCluase == JSON.stringify(whereClause)){
+                    const vehiclesStringified = await client.lRange("vehicles",0,-1)
+                    vehicles = vehiclesStringified.map((vehicle)=>{
+                        return JSON.parse(vehicle)
+                    })
+                    console.log('data sent from redis server')
+                }
+                else{
+                    // Finding vehicles based on the constructed whereClause
+                    vehicles = await Vehicle.findAll({ where: whereClause });
+                    // setting in redisServer
+                    client.set("whereClause",JSON.stringify(whereClause))
+                    client.del("vehicles")
+                    vehicles.forEach((vehicle)=>{
+                        const jsonString = JSON.stringify(vehicle);
+                        client.rPush("vehicles",jsonString)
+                    })
+                }
+
+                // first converting images and interier_features into arrays
                 const vehiclesFinal = vehicles.map((vehicle)=>{
                     vehicle.images = vehicle.images.split(',')
                     vehicle.interior_features = vehicle.interior_features.split(',')
@@ -48,8 +69,21 @@ const vehicleResolver = {
             try{
                 const vehicleId = args.id;
 
-                // finding vehicle
-                let vehicle = await Vehicle.findByPk(vehicleId);
+                // first checking if vehicle id is same as id last time . if yes we can get it from redis server
+                let vehicle;
+                let redisVehicleId = await client.get("vehicleId")
+                if (redisVehicleId == vehicleId){
+                    const vehicleStringified = await client.get('vehicle')
+                    vehicle = JSON.parse(vehicleStringified)
+                    console.log('data sent from redis server')
+                }
+                else{
+                    // finding vehicle from db
+                    vehicle = await Vehicle.findByPk(vehicleId);
+                    // updating in redisServer
+                    client.set("vehicleId",vehicleId)
+                    client.set("vehicle",JSON.stringify(vehicle))
+                }
 
                 // first convering images and interier_features into arrays
                 vehicle.images = vehicle.images.split(',')

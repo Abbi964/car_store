@@ -50,6 +50,7 @@ const typeDefs = `#graphql
         review(id : ID!)  : Review
         appointments : [Appointment]
         appointment(id : ID!)  : Appointment
+        getSlots(date : String!) : [Int]
     }
     type Mutation {
         addVehicle(vehicle : addVehicleInput!) : Vehicle

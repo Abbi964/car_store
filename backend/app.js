@@ -7,6 +7,7 @@ import typeDefs from "./graphQL/typeDefs.js";
 import resolvers from "./graphQL/resolvers/index.js";
 import mongoose from 'mongoose';
 import sequelize from './util/database.js';
+import { Redis} from 'ioredis';
 
 // importing models
 import User from './model/user.js';
