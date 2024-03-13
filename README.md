@@ -1,8 +1,13 @@
-This is a Car Shop project
-users can signup and login
-admin can create Cars(vehicles) 
-users can view cars without login but need to log in for adding a review about car
-users can also filter cars by make, model, color, milage, price, engineSize etc.
-Users can book appointment on perticuler date and slots
-User, Vehicle, Review Models are made in SQL using sequelize
+# Car Shop Project
+
+## Features
+
+- **User Authentication**: Users can sign up and log in to the platform.
+- **Vehicle Listings**: Users can view available cars without logging in.
+- **Reviews**: Registered users can leave reviews for cars.
+- **Advanced Filtering**: Users can filter vehicles by make, model, color, mileage, price, engine size, etc.
+-**Appointment**: Users can book appointment on perticuler date and slots
+- **Models**: User, Vehicle, Review Models are made in SQL using sequelize
 Appointment model is made in mongoDB using mongoose
+
+
