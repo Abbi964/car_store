@@ -24,11 +24,13 @@ Review.belongsTo(User);
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context : ({ req }) => ({ req})
 })
 
 const {url} = await startStandaloneServer(server, {
-    listen : {port : 4000}
+    listen : {port : 4000},
+    context: async ({ req, res }) => ({
+        token : req.headers.authorization
+    }),
 })
 
 sequelize.sync()

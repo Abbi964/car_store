@@ -5,18 +5,26 @@ import User from '../model/user.js';
 const authCheck = async(context) => {
     try{
         // getting token from header
-        const token = context.req.headers.authorization;
-      
+        const token = context.token;
+        console.log(token)
           if (token) {
             try {
-              const {userid} = jwt.verify(token, process.env.JWT_KEY);
+              const data = jwt.verify(token, process.env.JWT_KEY);
+              console.log(data)
               // getting user from db
-              let user = User.findByPk(userid)
-
-              return {user}
+              let user = await User.findByPk(data.userId)
+              
+              return new Promise((resolve,reject)=>{
+                if(user){
+                  resolve(user)
+                }
+                else{
+                  reject('user does not exists')
+                }
+              })
             } 
             catch (err) {
-              throw new Error('Invalid token');
+              throw new Error(err + 'Invalid token');
             }
           }
           else{
@@ -26,7 +34,7 @@ const authCheck = async(context) => {
     }
     catch(err){
         console.log(err);
-        return {err}
+        return err
     }
 };
 

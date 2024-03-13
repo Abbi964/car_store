@@ -75,12 +75,14 @@ const userResolvers = {
     //------------------------ Delete User ----------------------------------//
     async deleteUser(_,args,context){
         try{
-            const {user} = authCheck(context)
+            const user = authCheck(context)
             const userId = args.id
     
             if (user || user.id == userId || user.isAdmin){
                 // deleting user
-                await user.destroy()
+                let userToDel = await User.findByPk(userId);
+
+                await userToDel.destroy()
     
                 return "user deleted Successfully"
             }

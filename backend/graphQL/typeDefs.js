@@ -41,7 +41,7 @@ const typeDefs = `#graphql
         phone : Int! 
     }
     type Query {
-        vehicles : [Vehicle]
+        vehicles(filterObj : vehicleFilterInput!) : [Vehicle]
         vehicle(id : ID!)  : Vehicle
         users : [User]
         user(id : ID!) : User
@@ -94,6 +94,18 @@ const typeDefs = `#graphql
         date : String!
         time : Float!
         phone : Int! 
+    }
+    input vehicleFilterInput{
+        make : String!
+        model : String!
+        price : String!
+        milage : String!
+        fuel_type : String!
+        transmission : String!
+        body_type : String!
+        engine_size : String!
+        color : String!
+        availability : String!
     }
 `
 
