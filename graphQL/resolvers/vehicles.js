@@ -112,6 +112,10 @@ const vehicleResolver = {
 
                     let vehicle = await Vehicle.create(vehicleObj)
 
+                    // clearing vehicles from redisServer
+                    await client.del("vehicles")
+                    await client.del("whereClause")
+
                     return vehicle
                 }
                 else{
@@ -132,6 +136,10 @@ const vehicleResolver = {
                     // finding the vehicle and deleting
                     let vehicle = await Vehicle.findByPk(vehicleId)
                     await vehicle.destroy()
+
+                    // clearing vehicles from redisServer
+                    await client.del("vehicles")
+                    await client.del("whereClause")
 
                     return "vehicle deleted successfully"
                 }   
