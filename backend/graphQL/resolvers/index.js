@@ -1,3 +1,4 @@
+import reviewResolver from "./reviews.js";
 import userResolvers from "./users.js";
 import vehicleResolver from "./vehicles.js";
 
@@ -6,9 +7,11 @@ const resolvers = {
         ...userResolvers.Query,
         ...vehicleResolver.Query
     },
+    Vehicle : reviewResolver.Vehicle,
     Mutation : {
         ...userResolvers.Mutation,
-        ...vehicleResolver.Mutation
+        ...vehicleResolver.Mutation,
+        ...reviewResolver.Mutation
     }
 }
 

@@ -1,5 +1,5 @@
 import Vehicle from "../../model/vehicle.js";
-import { Op, where } from "sequelize";
+import { Op } from "sequelize";
 import authCheck from "../../util/authCheck.js";
 
 const vehicleResolver = {

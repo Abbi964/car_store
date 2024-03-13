@@ -16,6 +16,7 @@ const typeDefs = `#graphql
         interior_features : [String!]!
         images : [String!]!
         availability : Int!
+        reviews : [Review]!
     }
     type User {
         id : ID!
@@ -56,7 +57,7 @@ const typeDefs = `#graphql
         addUser(user : addUserInput!) : User
         deleteUser(id : ID!) : String
         login(email : String!, password : String!) : String!
-        addReview(review : addReviewInput!) : Review
+        addReview(review : addReviewInput!,vehicleId : ID!) : Review
         deleteReview(id : ID!) : String
         addAppointment(appointment : addAppointmentInput!) : Appointment
     }
