@@ -7,7 +7,7 @@ import typeDefs from "./graphQL/typeDefs.js";
 import resolvers from "./graphQL/resolvers/index.js";
 import mongoose from 'mongoose';
 import sequelize from './util/database.js';
-import { Redis} from 'ioredis';
+import connectQueue from './util/rabbitMQ.js';
 
 // importing models
 import User from './model/user.js';
@@ -47,4 +47,6 @@ sequelize.sync()
     })
     .catch(err=>console.log(err))
 
+await connectQueue()
+console.log("Queue is connected")
 console.log('server ready at port ',4000)

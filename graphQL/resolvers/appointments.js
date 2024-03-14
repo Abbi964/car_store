@@ -1,5 +1,6 @@
 import Appointment from "../../model/appointment.js";
 import authCheck from "../../util/authCheck.js";
+import { publishToQueue } from "../../util/rabbitMQ.js";
 
 const appointmentResolver = {
     Query : {
@@ -68,6 +69,9 @@ const appointmentResolver = {
                 // creating
                 let newAppointment = new Appointment(appointmentObj)
                 await newAppointment.save()
+
+                // publishing appointmentObj to queue so an email is sent to user
+                publishToQueue(appointmentObj)
 
                 return newAppointment
             }
